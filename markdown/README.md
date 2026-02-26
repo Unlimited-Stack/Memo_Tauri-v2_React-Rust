@@ -3,19 +3,75 @@
 这是专为 **GitHub Codespaces / 云主机** 环境设计的“人机协同”开发流程。通过将复杂架构拆解为四个独立的上下文（Context），我们可以确保 AI Agent 在每一阶段都能精准执行，并实现 **Web 预览挂载 + Rust 后端逻辑** 的完美解耦。
 
 ---
+## 阶段一：DevContainer 容器化配置与项目初始化
+**目标：** 通过环境即代码 (Env as Code) 配置标准的 Tauri 开发容器，彻底解决 Node/Rust 及 Linux 底层依赖的环境差异问题，随后快速构建 Tauri v2 骨架。
 
-## 阶段一：环境检查与项目初始化
-**目标：** 在云原生容器中快速构建 Tauri v2 (React + TS) 骨架，并确保依赖完整。
-
-### 🤖 请发给你的 AI Agent：
-> "你现在是我的全栈开发助手。我们当前处于一个基于 Linux 的云原生开发环境（如 Codespaces）。
+### 🤖 第一步：请发给你的 AI Agent（生成云原生环境配置）
+> "你现在是我的云原生架构师。我们要在 GitHub Codespaces / 云主机中开发 Tauri v2 应用。我们需要使用 Docker 容器来隔离和标准化开发环境。
 > 
-> 请按顺序帮我执行以下操作，并在每一步完成后向我确认：
-> 1. 检查当前环境是否已安装 `node` 和 `rustc`，如果没有，请提示我。
-> 2. 使用 npm 帮我初始化一个 Tauri v2 项目，项目名称为 `ai-memo`，前端框架选择 **React**，语言选择 **TypeScript**。
+> 请帮我在项目根目录创建 `.devcontainer` 文件夹，并生成以下两个文件，为 Tauri 提供包含 Rust、Node.js 20 以及必需 Linux WebKit 依赖的标准化容器环境：
+> 
+> **1. 创建 `.devcontainer/Dockerfile`，内容如下：**
+> ```dockerfile
+> FROM [mcr.microsoft.com/devcontainers/rust:1-bullseye](https://mcr.microsoft.com/devcontainers/rust:1-bullseye)
+> 
+> # 安装 Node.js 20
+> RUN curl -fsSL [https://deb.nodesource.com/setup_20.x](https://deb.nodesource.com/setup_20.x) | bash - \
+>     && apt-get install -y nodejs
+> 
+> # 安装 Tauri v2 编译所需的 Linux 系统依赖
+> RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+>     && apt-get install -y \
+>     libwebkit2gtk-4.0-dev \
+>     build-essential \
+>     curl \
+>     wget \
+>     file \
+>     libssl-dev \
+>     libgtk-3-dev \
+>     libayatana-appindicator3-dev \
+>     librsvg2-dev \
+>     && apt-get clean && rm -rf /var/lib/apt/lists/*
+> ```
+> 
+> **2. 创建 `.devcontainer/devcontainer.json`，内容如下：**
+> ```json
+> {
+>   "name": "Tauri v2 Dev Environment",
+>   "build": { "dockerfile": "Dockerfile" },
+>   "customizations": {
+>     "vscode": {
+>       "extensions": [
+>         "rust-lang.rust-analyzer",
+>         "tauri-apps.tauri-vscode",
+>         "dbaeumer.vscode-eslint"
+>       ]
+>     }
+>   },
+>   "forwardPorts": [1420],
+>   "remoteUser": "vscode"
+> }
+> ```
+> 请在文件创建完成后通知我。"
+
+---
+
+### 🛠️ 开发者手动操作：重建容器 (极速拉取环境)
+当 Agent 创建好 `.devcontainer` 目录后：
+1. 在网页端 Codespaces 或 VS Code 中按下 `Ctrl+Shift+P` (Mac 为 `Cmd+Shift+P`)。
+2. 输入并选择 **"Dev Containers: Rebuild Container"** (重建容器)。
+3. 喝口水等待一两分钟，云主机将自动根据 Dockerfile 拉取镜像并配置好完美的 Tauri 环境。（此步骤彻底取代了手动配置环境）。
+
+---
+
+### 🤖 第二步：请发给你的 AI Agent（容器重启后，初始化项目）
+> "太棒了，现在我们的云原生容器环境已经就绪，`node`、`rustc` 以及 Linux 底层构建依赖均已就位。
+> 
+> 请帮我执行以下操作：
+> 1. 使用 npm 帮我初始化一个 Tauri v2 项目，项目名称为 `ai-memo`，前端框架选择 **React**，语言选择 **TypeScript**。
 >    *命令参考：* `npm create tauri-app@latest ai-memo -- --manager npm --template react-ts`
-> 3. 进入 `ai-memo` 目录，运行 `npm install` 安装所有前端依赖。
-> 4. 完成后，告诉我目录结构是否生成成功。"
+> 2. 进入 `ai-memo` 目录，运行 `npm install` 安装所有前端依赖。
+> 3. 完成后，告诉我目录结构是否生成成功。"
 
 ---
 

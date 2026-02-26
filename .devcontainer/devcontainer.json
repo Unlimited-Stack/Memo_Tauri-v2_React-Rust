@@ -1,0 +1,15 @@
+{
+  "name": "Tauri v2 Dev Environment",
+  "build": { "dockerfile": "Dockerfile" },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tauri-apps.tauri-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  "forwardPorts": [1420],
+  "remoteUser": "vscode"
+}

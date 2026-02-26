@@ -7,7 +7,11 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "docker:build": "docker build -t ai-memo-dev .",
+    "docker:dev": "docker compose up --build dev",
+    "docker:stop": "docker compose down",
+    "docker:check": "docker compose run --rm rust-check"
   },
   "dependencies": {
     "react": "^19.1.0",

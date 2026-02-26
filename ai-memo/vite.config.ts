@@ -28,5 +28,13 @@ export default defineConfig(async () => ({
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
     },
+    // 将前端 /api 转发到本机 1422 上的 HTTP 后端，
+    // 这样浏览器只访问 1420 域名，避免跨域/CORS 问题（Codespaces 亦适用）。
+    proxy: {
+      "/api": {
+        target: "http://localhost:1422",
+        changeOrigin: true,
+      },
+    },
   },
 }));

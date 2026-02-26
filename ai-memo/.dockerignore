@@ -1,0 +1,17 @@
+node_modules
+dist
+build
+.cache
+.turbo
+.next
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+src-tauri/target
+.git
+.gitignore
+.DS_Store
+**/.vscode
+**/.idea
+**/.env*

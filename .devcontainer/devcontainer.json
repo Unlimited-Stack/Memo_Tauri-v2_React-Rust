@@ -1,6 +1,7 @@
 {
   "name": "Tauri v2 Dev Environment",
-  "build": { "dockerfile": "Dockerfile" },
+  "build": { "dockerfile": "../ai-memo/Dockerfile" },
+  "postCreateCommand": "cd ai-memo && npm ci && cd src-tauri && cargo check || true",
   "customizations": {
     "vscode": {
       "extensions": [

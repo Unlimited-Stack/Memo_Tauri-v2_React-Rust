@@ -1,4 +1,4 @@
-# AI Agent 跨端备忘录（Tauri v2 + React）
+# 多端部署简易备忘录Test（Tauri v2 + React）
 
 本项目是一个基于 Tauri v2 的极简备忘录应用，支持桌面（Windows/macOS/Linux）、移动（Android/iOS，需本地环境）与纯 Web 预览。前端采用 React + Vite，后端使用 Rust，并通过 Tauri 的 IPC 进行前后端通信。为适配云端开发（如 GitHub Codespaces），前端内置“优雅降级”，即使在没有 Tauri 运行时的浏览器中也能正常预览和交互。
 
